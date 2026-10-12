@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: pubg-market
+    runtime: static
+    buildCommand: echo "Static site, no build needed"
+    staticPublishPath: ./public
+    pullRequestPreviewsEnabled: true
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /landing
+        destination: /landing/index.html

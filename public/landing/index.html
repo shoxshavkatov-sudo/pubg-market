@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Market — скоро запуск</title>
+<style>
+:root{--bg:#fff;--fg:#0b0b0b;--mut:#6b6b6b;--line:#e4e4e4;--card:#f5f5f5;--ac:#ff6a00;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--fg:#fff;--mut:#8f8f8f;--line:#222;--card:#121212;--ac:#ff7a1a}}
+:root[data-theme="dark"]{--bg:#000;--fg:#fff;--mut:#8f8f8f;--line:#222;--card:#121212;--ac:#ff7a1a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--fg);font:16px/1.4 -apple-system,"Helvetica Neue",Inter,Arial,sans-serif;display:grid;place-items:center;overflow:hidden}
+.bl{position:fixed;inset:0;pointer-events:none}.bl i{position:absolute;width:46vmax;height:46vmax;border-radius:50%;filter:blur(90px);opacity:.3;background:var(--ac);left:-12vmax;top:-14vmax;animation:mv 16s ease-in-out infinite alternate}
+.bl i+i{left:auto;right:-14vmax;top:auto;bottom:-16vmax;background:var(--fg);opacity:.07;animation-duration:22s}
+@keyframes mv{to{transform:translate(12vmax,8vmax) scale(1.2)}}
+main{position:relative;width:min(560px,100% - 40px);text-align:center;padding:32px 0}
+.lg{width:84px;height:84px;margin:0 auto 28px;animation:pop .8s cubic-bezier(.3,1.5,.5,1) both}
+.lg rect{fill:var(--fg)}.lg .a{fill:var(--ac)}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+@keyframes rise{from{transform:translateY(24px);opacity:0;filter:blur(6px)}}
+h1{font-size:clamp(44px,12vw,84px);letter-spacing:-.04em;line-height:1;margin:0 0 16px;animation:rise .8s .15s cubic-bezier(.2,.8,.2,1) both}
+h1 span{color:var(--ac)}
+p{color:var(--mut);margin:0 0 28px;animation:rise .8s .3s cubic-bezier(.2,.8,.2,1) both}
+form{display:flex;gap:8px;padding:6px;border-radius:99px;background:var(--card);border:1px solid var(--line);animation:rise .8s .45s cubic-bezier(.2,.8,.2,1) both;transition:border-color .2s,transform .2s}
+form:focus-within{border-color:var(--ac);transform:scale(1.02)}
+input{flex:1;min-width:0;border:0;background:none;padding:0 16px;font:inherit;color:inherit;outline:none}
+button{border:0;border-radius:99px;background:var(--ac);color:#000;font:inherit;font-weight:600;padding:14px 22px;cursor:pointer;transition:transform .15s;position:relative;overflow:hidden}
+button:active{transform:scale(.94)}
+button::after{content:"";position:absolute;top:0;bottom:0;width:50%;left:-70%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);animation:sw 3.5s ease-in-out infinite}
+@keyframes sw{55%,100%{left:140%}}
+.er{color:var(--ac);min-height:22px;margin:10px 0 0;font-size:14px}
+.ok{display:none;flex-direction:column;align-items:center;gap:10px}.ok.on{display:flex;animation:pop .6s cubic-bezier(.3,1.5,.5,1)}
+.ok svg{width:64px;height:64px;stroke:var(--ac);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.ok path{stroke-dasharray:30;stroke-dashoffset:30;animation:dr .6s .2s forwards}.ok circle{stroke-dasharray:70;stroke-dashoffset:70;animation:dr .7s forwards}
+@keyframes dr{to{stroke-dashoffset:0}}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0ms!important}}
+</style>
+</head>
+<body>
+<div class="bl"><i></i><i></i></div>
+<main>
+<svg class="lg" viewBox="0 0 24 24" aria-label="Market"><rect x="3" y="3" width="8" height="8" rx="2.5"/><rect class="a" x="13" y="3" width="8" height="8" rx="2.5"/><rect x="3" y="13" width="8" height="8" rx="2.5"/><rect x="13" y="13" width="8" height="8" rx="2.5"/></svg>
+<h1>Coming <span>soon</span></h1>
+<p>Маркетплейс аккаунтов PUBG Mobile. Оставьте e-mail, и мы сообщим о запуске первыми.</p>
+<form id="f" novalidate><input id="e" type="email" placeholder="you@example.com" aria-label="E-mail" autocomplete="email"><button type="submit">Сообщить мне</button></form>
+<p class="er" id="er" style="animation:none"></p>
+<div class="ok" id="ok"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M7 12.5l3.2 3.2L17 9"/></svg><b>Спасибо! Мы напишем вам перед запуском</b></div>
+</main>
+<script>
+var f=document.getElementById("f"),e=document.getElementById("e"),er=document.getElementById("er"),ok=document.getElementById("ok");
+try{if(localStorage.getItem("mk_mail")){f.style.display="none";er.style.display="none";ok.classList.add("on")}}catch(x){}
+f.addEventListener("submit",function(ev){ev.preventDefault();var v=e.value.trim();
+ if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){er.textContent="Введите корректный e-mail";f.animate([{transform:"translateX(0)"},{transform:"translateX(-8px)"},{transform:"translateX(8px)"},{transform:"translateX(0)"}],{duration:300});return}
+ try{localStorage.setItem("mk_mail",v)}catch(x){}
+ f.style.display="none";er.style.display="none";ok.classList.add("on")});
+</script>
+</body>
+</html>
