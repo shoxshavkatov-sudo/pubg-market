@@ -1,21 +1,12 @@
+# Один сервис: Node-сервер раздаёт и сайт (папка public), и API чата/объявлений.
 services:
   - type: web
     name: pubg-market
-    runtime: static
-    buildCommand: echo "Static site, no build needed"
-    staticPublishPath: ./public
-    pullRequestPreviewsEnabled: true
-    headers:
-      - path: /*
-        name: X-Content-Type-Options
-        value: nosniff
-      - path: /*
-        name: Referrer-Policy
-        value: strict-origin-when-cross-origin
-      - path: /index.html
-        name: Cache-Control
-        value: no-cache
-    routes:
-      - type: rewrite
-        source: /landing
-        destination: /landing/index.html
+    runtime: node
+    plan: free
+    buildCommand: echo "No dependencies to install"
+    startCommand: node server/index.js
+    healthCheckPath: /health
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
